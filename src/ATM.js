@@ -11,3 +11,7 @@ var ATM = (function() {
         }
     }
 })();
+
+$(function() {
+	$('input#cashDrawer').val(10);
+});

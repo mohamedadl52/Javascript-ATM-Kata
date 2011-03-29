@@ -9,7 +9,7 @@ describe("ATM Story Tests", function(){
         $('input#PIN').val('1234');
         $('input#amount').val(10);
         $('input#withdraw').click();
-        expect($('#cashDrawer').val()).toEqual(10);
+        expect($('#cashDrawer').val()).toEqual('10');
     });
     it("Prevents Judy from withdrawing money when she doesn't have it available", function() {
         $('input#accountNumber').val('1234567890');

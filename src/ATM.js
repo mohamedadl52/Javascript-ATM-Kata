@@ -2,10 +2,18 @@ var Bank = (function() {
 	var Bank = function() {}
 	Bank.prototype = {
 		hasAccount: function(accountNumber, pin) {
-			return (accountNumber == '1234567890' && pin == '1234') ||
-        			(accountNumber == '0987654321' && pin == '1111');
+			return (this.accounts[accountNumber] == pin);
 		},
-		balance: 20
+		accounts: {'1234567890' : '1234', 
+				   '0987654321' : '1111'},
+		balance: 20, 
+		setBalance: function(amount, accountNumber, pin) {
+			this.balance = amount;
+		},
+		withdraw: function(amount, accountNumber, pin) {
+			this.balance -= amount;
+			return amount;
+		}
 	}
 	return {
 		create: function() {
@@ -19,15 +27,19 @@ var ATM = (function() {
     ATM.prototype = {
         withdraw: function(amount, accountNumber, pin) {
         	var withdrawn = 0;
-        	if((this.bank.hasAccount(accountNumber, pin)) && 
-        		this.bank.balance > amount) { 
-        		withdrawn = amount;
-        		this.bank.balance -= amount;
+        	var balance = this.checkBalance(accountNumber, pin);
+        	if(this.bank.hasAccount(accountNumber, pin) && 
+				balance > amount) { 
+        		withdrawn = this.bank.withdraw(amount, accountNumber, pin);
 			}
 			$('input#cashDrawer').val(withdrawn);
-			$('#accountBalance').text(this.bank.balance);
+			$('#accountBalance').text(this.checkBalance(accountNumber, pin));
 			return withdrawn;
-        }
+        },
+    	checkBalance: function(accountNumber, pin) {
+    		return this.bank.balance;
+		}
+
     }
     return {
         create: function() {
@@ -39,7 +51,7 @@ var ATM = (function() {
 					$('input#PIN').val());
 			});
             return atm;
-        }
-    }
+        }    
+	}
 })();
 

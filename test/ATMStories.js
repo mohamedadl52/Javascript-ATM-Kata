@@ -18,39 +18,60 @@ describe("ATM Story Tests", function(){
 		var atm = ATM.create();
 		atm.bank.balance = 100;
     });
-    it("Allows Judy to withdraw money when she has a balance available", function() {
-        $('input#accountNumber').val('1234567890');
-        $('input#PIN').val('1234');
-        $('input#amount').val(10);
-        $('input#withdraw').click();
-        expect($('#cashDrawer').val()).toEqual('10');
-    });
-    it("Prevents Judy from withdrawing money when she doesn't have it available", function() {
-        $('input#accountNumber').val('1234567890');
-        $('input#PIN').val('1234');
-        $('input#amount').val(110);
-        $('input#withdraw').click();
-        expect($('#cashDrawer').val()).toEqual('0');
-    });
-    it("Prevents Judy from withdrawing money when she puts in an incorrect pin", function() {
-        $('input#accountNumber').val('1234567890');
-        $('input#PIN').val('5678');
-        $('input#amount').val(25);
-        $('input#withdraw').click();
-        expect($('#cashDrawer').val()).toEqual('0');
+    describe("Judy withdraws money", function() {
+		it("Allows Judy to withdraw money when she has a balance available", function() {
+			$('input#accountNumber').val('1234567890');
+			$('input#PIN').val('1234');
+			$('input#amount').val(10);
+			$('input#withdraw').click();
+			expect($('#cashDrawer').val()).toEqual('10');
+		});
+		it("Prevents Judy from withdrawing money when she doesn't have it available", function() {
+			$('input#accountNumber').val('1234567890');
+			$('input#PIN').val('1234');
+			$('input#amount').val(110);
+			$('input#withdraw').click();
+			expect($('#cashDrawer').val()).toEqual('0');
+		});
+		it("Prevents Judy from withdrawing money when she puts in an incorrect pin", function() {
+			$('input#accountNumber').val('1234567890');
+			$('input#PIN').val('5678');
+			$('input#amount').val(25);
+			$('input#withdraw').click();
+			expect($('#cashDrawer').val()).toEqual('0');
+		});
+		it("Prevents Judy from withdrawing money when she puts in an incorrect account number", function() {
+			$('input#accountNumber').val('0987654321');
+			$('input#PIN').val('1234');
+			$('input#amount').val(25);
+			$('input#withdraw').click();
+			expect($('#cashDrawer').val()).toEqual('0');
+		});
+		it("Updates Judys balance when she withdraws money", function() {
+			$('input#accountNumber').val('1234567890');
+			$('input#PIN').val('1234');
+			$('input#amount').val(10);
+			$('input#withdraw').click();
+			expect($('#accountBalance').text()).toEqual('90');
+		});
 	});
-    it("Prevents Judy from withdrawing money when she puts in an incorrect account number", function() {
-        $('input#accountNumber').val('0987654321');
-        $('input#PIN').val('1234');
-        $('input#amount').val(25);
-        $('input#withdraw').click();
-        expect($('#cashDrawer').val()).toEqual('0');
+	describe('Multiple people withdraw money', function() {
+		it('Allows Mark to withdraw money when he uses the correct account number and pin', function() {
+			tryToWithdrawMoney('0987654321', '1111', 50)
+			expect($('#cashDrawer').val()).toEqual('50');
+		});
+		it('updates only marks balance when he withdraws money', function() {
+			tryToWithdrawMoney('0987654321', '1111', 50);
+			expect($('#accountBalance').text()).toEqual('50');
+			tryToWithdrawMoney('1234567890', '1234', 0);
+			expect($('#accountBalance').text()).toEqual('100');
+		});
 	});
-    it("Updates Judys balance when she withdraws money", function() {
-        $('input#accountNumber').val('1234567890');
-        $('input#PIN').val('1234');
-        $('input#amount').val(10);
-        $('input#withdraw').click();
-        expect($('#accountBalance').text()).toEqual('90');
-    });
+	var tryToWithdrawMoney = function(accountNumber, pin, amount) {
+		
+			$('input#accountNumber').val(accountNumber);
+			$('input#PIN').val(pin);   
+			$('input#amount').val(amount);
+			$('input#withdraw').click();
+	}
 });

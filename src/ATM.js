@@ -1,6 +1,10 @@
 var Bank = (function() {
 	var Bank = function() {}
 	Bank.prototype = {
+		hasAccount: function(accountNumber, pin) {
+			return (accountNumber == '1234567890' && pin == '1234') ||
+        			(accountNumber == '0987654321' && pin == '1111');
+		},
 		balance: 20
 	}
 	return {
@@ -15,7 +19,8 @@ var ATM = (function() {
     ATM.prototype = {
         withdraw: function(amount, accountNumber, pin) {
         	var withdrawn = 0;
-        	if(accountNumber == '1234567890' && pin == '1234' && this.bank.balance > amount) { 
+        	if((this.bank.hasAccount(accountNumber, pin)) && 
+        		this.bank.balance > amount) { 
         		withdrawn = amount;
         		this.bank.balance -= amount;
 			}

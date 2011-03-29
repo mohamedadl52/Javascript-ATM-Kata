@@ -8,3 +8,4 @@ Stories:
 As Judy, I would like to withdraw money from my account if I have the funds available
 As Judy, I would like to withdraw money from my account only if I supply a valid account number and PIN
 As the bank, I would like the balance on Judys account to be updated when she withdraws money
+As Mark, I would like the same account functionality as Judy but have a different account number and PIN

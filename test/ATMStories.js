@@ -16,7 +16,7 @@ describe("ATM Story Tests", function(){
         $('input#PIN').val('1234');
         $('input#amount').val(110);
         $('input#withdraw').click();
-        expect($('#cashDrawer').val()).toEqual(0);
+        expect($('#cashDrawer').val()).toEqual('0');
     });
     it("Prevents Judy from withdrawing money when she puts in an incorrect pin", function() {
         $('input#accountNumber').val('1234567890');

@@ -1,8 +1,13 @@
 var ATM = (function() {
     var ATM = function() {}
     ATM.prototype = {
-        withdraw: function() {
-
+        withdraw: function(amount) {
+        	var withdrawn = 0;
+        	if(this.bank.balance() > amount) { 
+        		withdrawn = amount;
+			}
+			$('input#cashDrawer').val(withdrawn);
+			return withdrawn;
         }
     }
     return {
@@ -13,5 +18,7 @@ var ATM = (function() {
 })();
 
 $(function() {
-	$('input#cashDrawer').val(10);
+	$('input#withdraw').click(function() {
+		ATM.create().withdraw();
+	});
 });

@@ -11,8 +11,11 @@ var Bank = (function() {
 			this.balance = amount;
 		},
 		withdraw: function(amount, accountNumber, pin) {
-			this.balance -= amount;
-			return amount;
+			if(this.balance > amount && this.hasAccount(accountNumber, pin)) {  
+				this.balance -= amount;
+				return amount;
+			}
+			return 0;
 		}
 	}
 	return {
@@ -26,12 +29,7 @@ var ATM = (function() {
     var ATM = function() {}
     ATM.prototype = {
         withdraw: function(amount, accountNumber, pin) {
-        	var withdrawn = 0;
-        	var balance = this.checkBalance(accountNumber, pin);
-        	if(this.bank.hasAccount(accountNumber, pin) && 
-				balance > amount) { 
-        		withdrawn = this.bank.withdraw(amount, accountNumber, pin);
-			}
+			var withdrawn = this.bank.withdraw(amount, accountNumber, pin);
 			$('input#cashDrawer').val(withdrawn);
 			$('#accountBalance').text(this.checkBalance(accountNumber, pin));
 			return withdrawn;

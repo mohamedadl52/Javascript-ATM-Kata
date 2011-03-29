@@ -16,7 +16,8 @@ describe("ATM Story Tests", function(){
 			'</ul>' 
 		);
 		var atm = ATM.create();
-		atm.bank.balance = 100;
+		atm.bank.setBalance(100, '1234567890', '1234');
+		atm.bank.setBalance(100, '0987654321', '1111');
     });
     describe("Judy withdraws money", function() {
 		it("Allows Judy to withdraw money when she has a balance available", function() {

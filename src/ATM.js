@@ -6,13 +6,19 @@ var Bank = (function() {
 		},
 		accounts: {'1234567890' : '1234', 
 				   '0987654321' : '1111'},
-		balance: 20, 
+		balances: {'1234567890' : '50',
+				   '0987654321' : '50'}, 
 		setBalance: function(amount, accountNumber, pin) {
-			this.balance = amount;
+			this.balances[accountNumber] = amount;
+		},
+    	checkBalance: function(accountNumber, pin) {
+    		return this.balances[accountNumber];
 		},
 		withdraw: function(amount, accountNumber, pin) {
-			if(this.balance > amount && this.hasAccount(accountNumber, pin)) {  
-				this.balance -= amount;
+			var balance = this.checkBalance(accountNumber, pin);
+			if(balance > amount && this.hasAccount(accountNumber, pin)) {  
+				balance -= amount;
+				this.setBalance(balance, accountNumber, pin);
 				return amount;
 			}
 			return 0;
@@ -35,7 +41,7 @@ var ATM = (function() {
 			return withdrawn;
         },
     	checkBalance: function(accountNumber, pin) {
-    		return this.bank.balance;
+    		return this.bank.checkBalance(accountNumber, pin);
 		}
 
     }
